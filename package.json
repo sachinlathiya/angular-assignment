@@ -1,0 +1,10 @@
+{
+  "name": "angular-assignment",
+  "private": true,
+  "description": "Angular deadline countdown assignment",
+  "scripts": {
+    "dev": "npm run dev --prefix deadline-app",
+    "start": "npm start --prefix deadline-app",
+    "test": "npm test --prefix deadline-app"
+  }
+}

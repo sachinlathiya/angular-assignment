@@ -1,7 +1,57 @@
 @if (viewModel$ | async; as vm) {
-  @if (vm.status === 'ok') {
-    <p class="countdown">Seconds left to deadline: {{ vm.seconds }}</p>
-  } @else {
-    <p class="error">Unable to load the deadline. Check that the API is running.</p>
+  @switch (vm.status) {
+    @case ('loading') {
+      <section class="card card--loading" aria-live="polite" aria-busy="true">
+        <div class="pulse-block pulse-block--title"></div>
+        <div class="pulse-block pulse-block--value"></div>
+        <div class="pulse-row">
+          <div class="pulse-block pulse-block--chip"></div>
+          <div class="pulse-block pulse-block--chip"></div>
+          <div class="pulse-block pulse-block--chip"></div>
+          <div class="pulse-block pulse-block--chip"></div>
+        </div>
+        <p class="sr-only">Loading countdown...</p>
+      </section>
+    }
+
+    @case ('ok') {
+      @let parts = vm.seconds | countdownBreakdown;
+
+      <section class="card" aria-live="polite">
+        <p class="countdown-line">
+          Seconds left to deadline:
+          <strong class="countdown-value">{{ vm.seconds | number }}</strong>
+        </p>
+
+        <ul class="breakdown" aria-label="Time remaining breakdown">
+          <li class="breakdown__item">
+            <span class="breakdown__value">{{ parts.days }}</span>
+            <span class="breakdown__label">Days</span>
+          </li>
+          <li class="breakdown__item">
+            <span class="breakdown__value">{{ parts.hours }}</span>
+            <span class="breakdown__label">Hours</span>
+          </li>
+          <li class="breakdown__item">
+            <span class="breakdown__value">{{ parts.minutes }}</span>
+            <span class="breakdown__label">Minutes</span>
+          </li>
+          <li class="breakdown__item">
+            <span class="breakdown__value">{{ parts.seconds }}</span>
+            <span class="breakdown__label">Seconds</span>
+          </li>
+        </ul>
+      </section>
+    }
+
+    @case ('error') {
+      <section class="card card--error" role="alert">
+        <p class="error-title">Could not reach the deadline API</p>
+        <p class="error-text">
+          Run <code>npm run server</code> in another terminal, or use
+          <code>npm run dev</code> to start both services.
+        </p>
+      </section>
+    }
   }
 }

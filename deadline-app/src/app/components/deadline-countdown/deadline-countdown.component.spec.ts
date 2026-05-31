@@ -31,25 +31,26 @@ describe('DeadlineCountdownComponent', () => {
   it('shows the countdown text', () => {
     renderCountdown(of(42));
 
-    const text = fixture.debugElement.query(By.css('.countdown')).nativeElement
-      .textContent;
+    const line = fixture.debugElement.query(By.css('.countdown-line'))
+      .nativeElement.textContent;
 
-    expect(text).toContain('Seconds left to deadline: 42');
+    expect(line).toContain('Seconds left to deadline:');
+    expect(line).toContain('42');
   });
 
   it('shows zero when the deadline has passed', () => {
     renderCountdown(of(0));
 
-    const text = fixture.debugElement.query(By.css('.countdown')).nativeElement
-      .textContent;
+    const value = fixture.debugElement.query(By.css('.countdown-value'))
+      .nativeElement.textContent;
 
-    expect(text).toContain('Seconds left to deadline: 0');
+    expect(value.trim()).toBe('0');
   });
 
   it('shows an error message when loading fails', () => {
     renderCountdown(throwError(() => new Error('network')));
 
-    const error = fixture.debugElement.query(By.css('.error'));
+    const error = fixture.debugElement.query(By.css('.card--error'));
     expect(error).toBeTruthy();
   });
 });
