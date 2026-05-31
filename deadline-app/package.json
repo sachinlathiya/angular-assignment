@@ -7,10 +7,14 @@
     "server": "node server/server.js",
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "build": "ng build",
+    "start:prod": "node server/server.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch --browsers=ChromeHeadless"
   },
   "private": true,
+  "engines": {
+    "node": ">=20.11.1"
+  },
   "dependencies": {
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
