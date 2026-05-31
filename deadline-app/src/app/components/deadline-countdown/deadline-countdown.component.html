@@ -1,0 +1,7 @@
+@if (viewModel$ | async; as vm) {
+  @if (vm.status === 'ok') {
+    <p class="countdown">Seconds left to deadline: {{ vm.seconds }}</p>
+  } @else {
+    <p class="error">Unable to load the deadline. Check that the API is running.</p>
+  }
+}

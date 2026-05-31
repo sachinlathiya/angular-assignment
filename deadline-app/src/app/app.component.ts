@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
+import { DeadlineCountdownComponent } from './components/deadline-countdown/deadline-countdown.component';
+
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [DeadlineCountdownComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'deadline-app';
-}
+export class AppComponent {}
