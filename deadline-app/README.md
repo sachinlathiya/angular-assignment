@@ -59,4 +59,3 @@ server/
 - The mock server uses a fixed deadline of `2026-12-31T23:59:59Z`.
 - `DeadlineCountdownService` converts the first response into a target timestamp and uses RxJS `timer(0, 1000)` for updates.
 - `DeadlineCountdownComponent` uses `ChangeDetectionStrategy.OnPush` and the async pipe to avoid manual subscriptions.
-- If you see a duplicate `"test"` key warning during `ng serve`, check parent folders for another `package.json` with repeated script names.
