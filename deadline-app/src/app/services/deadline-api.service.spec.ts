@@ -27,7 +27,7 @@ describe('DeadlineApiService', () => {
     let result: number | undefined;
 
     service.fetchSecondsLeft().subscribe((response) => {
-      result = response.secondsLeft;
+      result = response;
     });
 
     const req = httpMock.expectOne('/api/deadline');
@@ -35,5 +35,44 @@ describe('DeadlineApiService', () => {
     req.flush({ secondsLeft: 120 });
 
     expect(result).toBe(120);
+  });
+
+  it('clamps negative values to zero', () => {
+    let result: number | undefined;
+
+    service.fetchSecondsLeft().subscribe((secondsLeft) => {
+      result = secondsLeft;
+    });
+
+    const req = httpMock.expectOne('/api/deadline');
+    req.flush({ secondsLeft: -25 });
+
+    expect(result).toBe(0);
+  });
+
+  it('falls back to zero when response is null', () => {
+    let result: number | undefined;
+
+    service.fetchSecondsLeft().subscribe((secondsLeft) => {
+      result = secondsLeft;
+    });
+
+    const req = httpMock.expectOne('/api/deadline');
+    req.flush(null);
+
+    expect(result).toBe(0);
+  });
+
+  it('falls back to zero when secondsLeft is invalid', () => {
+    let result: number | undefined;
+
+    service.fetchSecondsLeft().subscribe((secondsLeft) => {
+      result = secondsLeft;
+    });
+
+    const req = httpMock.expectOne('/api/deadline');
+    req.flush({ secondsLeft: 'oops' });
+
+    expect(result).toBe(0);
   });
 });

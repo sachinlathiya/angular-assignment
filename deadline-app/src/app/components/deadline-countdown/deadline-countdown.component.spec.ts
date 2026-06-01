@@ -53,4 +53,11 @@ describe('DeadlineCountdownComponent', () => {
     const error = fixture.debugElement.query(By.css('.card--error'));
     expect(error).toBeTruthy();
   });
+
+  it('shows a loading skeleton before first value arrives', () => {
+    renderCountdown(new Observable<number>());
+
+    const loadingCard = fixture.debugElement.query(By.css('.card--loading'));
+    expect(loadingCard).toBeTruthy();
+  });
 });

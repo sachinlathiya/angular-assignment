@@ -17,7 +17,7 @@
     @case ('ok') {
       @let parts = vm.seconds | countdownBreakdown;
 
-      <section class="card" aria-live="polite">
+      <section class="card" aria-live="polite" aria-atomic="true">
         <p class="countdown-line">
           Seconds left to deadline:
           <strong class="countdown-value">{{ vm.seconds | number }}</strong>
@@ -25,19 +25,19 @@
 
         <ul class="breakdown" aria-label="Time remaining breakdown">
           <li class="breakdown__item">
-            <span class="breakdown__value">{{ parts.days }}</span>
+            <span class="breakdown__value" aria-label="Days remaining">{{ parts.days }}</span>
             <span class="breakdown__label">Days</span>
           </li>
           <li class="breakdown__item">
-            <span class="breakdown__value">{{ parts.hours }}</span>
+            <span class="breakdown__value" aria-label="Hours remaining">{{ parts.hours }}</span>
             <span class="breakdown__label">Hours</span>
           </li>
           <li class="breakdown__item">
-            <span class="breakdown__value">{{ parts.minutes }}</span>
+            <span class="breakdown__value" aria-label="Minutes remaining">{{ parts.minutes }}</span>
             <span class="breakdown__label">Minutes</span>
           </li>
           <li class="breakdown__item">
-            <span class="breakdown__value">{{ parts.seconds }}</span>
+            <span class="breakdown__value" aria-label="Seconds remaining">{{ parts.seconds }}</span>
             <span class="breakdown__label">Seconds</span>
           </li>
         </ul>

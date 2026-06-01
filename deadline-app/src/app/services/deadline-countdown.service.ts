@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, switchMap, takeWhile, timer } from 'rxjs';
+import { distinctUntilChanged, map, Observable, switchMap, takeWhile, timer } from 'rxjs';
 
 import { DeadlineApiService } from './deadline-api.service';
 
@@ -13,7 +13,7 @@ export class DeadlineCountdownService {
    */
   countdown$(): Observable<number> {
     return this.api.fetchSecondsLeft().pipe(
-      map(({ secondsLeft }) => Date.now() + secondsLeft * 1000),
+      map((secondsLeft) => Date.now() + secondsLeft * 1000),
       switchMap((deadlineMs) => this.tickUntilDeadline(deadlineMs))
     );
   }
@@ -21,7 +21,8 @@ export class DeadlineCountdownService {
   private tickUntilDeadline(deadlineMs: number): Observable<number> {
     return timer(0, 1000).pipe(
       map(() => this.secondsUntil(deadlineMs)),
-      takeWhile((seconds) => seconds >= 0, true)
+      distinctUntilChanged(),
+      takeWhile((seconds) => seconds > 0, true)
     );
   }
 

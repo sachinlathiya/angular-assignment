@@ -22,7 +22,7 @@ describe('DeadlineCountdownService', () => {
   });
 
   it('counts down locally after the first API call', fakeAsync(() => {
-    api.fetchSecondsLeft.and.returnValue(of({ secondsLeft: 3 }));
+    api.fetchSecondsLeft.and.returnValue(of(3));
 
     const values: number[] = [];
     service.countdown$().subscribe((value) => values.push(value));
@@ -41,11 +41,33 @@ describe('DeadlineCountdownService', () => {
   }));
 
   it('does not call the API again while ticking', fakeAsync(() => {
-    api.fetchSecondsLeft.and.returnValue(of({ secondsLeft: 2 }));
+    api.fetchSecondsLeft.and.returnValue(of(2));
 
     service.countdown$().subscribe();
     tick(3000);
 
     expect(api.fetchSecondsLeft).toHaveBeenCalledTimes(1);
+  }));
+
+  it('emits zero once and then completes', fakeAsync(() => {
+    api.fetchSecondsLeft.and.returnValue(of(0));
+
+    const values: number[] = [];
+    service.countdown$().subscribe((value) => values.push(value));
+
+    tick(5000);
+
+    expect(values).toEqual([0]);
+  }));
+
+  it('handles negative values from the API as already passed deadline', fakeAsync(() => {
+    api.fetchSecondsLeft.and.returnValue(of(-5));
+
+    const values: number[] = [];
+    service.countdown$().subscribe((value) => values.push(value));
+
+    tick(2000);
+
+    expect(values).toEqual([0]);
   }));
 });
